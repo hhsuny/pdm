@@ -54,7 +54,15 @@ export const authModule = {
         </div>
         <p id="login-error" class="text-[#FF3B30] text-sm hidden"></p>
         <button type="submit" class="btn-primary w-full text-base py-3">登录</button>
-        <p class="text-xs text-secondary text-center mt-3">
+        <div class="text-center mt-3">
+          <button type="button" class="btn-ghost text-xs" data-action="show-restore">☁️ 从云端恢复账号</button>
+        </div>
+        <div id="restore-section" class="hidden mt-3 pt-3 border-t border-[var(--color-border)]">
+          <p class="text-xs text-secondary mb-2">输入 GitHub Token，拉取你在其他设备上注册的账号</p>
+          <input type="password" class="input-field mb-2 text-sm" id="restore-token" placeholder="ghp_...">
+          <button type="button" class="btn-primary w-full text-sm" data-action="do-restore">拉取账号</button>
+        </div>
+      </form>`;
           💡 在另一台设备注册过？请用<b>同样的用户名和密码</b>在此<b>注册</b>，然后设置页开启同步
         </p>
       </form>`;
@@ -149,6 +157,30 @@ export const authModule = {
       regForm.addEventListener('submit', handler);
       this._cleanup.push(() => regForm.removeEventListener('submit', handler));
     }
+
+    // Restore from cloud
+    container.addEventListener('click', (e) => {
+      if (e.target.closest('[data-action="show-restore"]')) {
+        document.getElementById('restore-section').classList.toggle('hidden');
+      }
+      if (e.target.closest('[data-action="do-restore"]')) {
+        const token = document.getElementById('restore-token').value.trim();
+        if (!token) return;
+        const btn = e.target.closest('[data-action="do-restore"]');
+        btn.textContent = '拉取中...'; btn.disabled = true;
+        import('../sync.js').then(async ({ sync }) => {
+          try {
+            await sync.setup(token);
+            await sync.pull();
+            state.emit('toast:show', { message: '账号拉取成功！请用电脑上的用户名密码登录', type: 'success' });
+            document.getElementById('restore-section').classList.add('hidden');
+          } catch (err) {
+            state.emit('toast:show', { message: '拉取失败: ' + err.message, type: 'error' });
+          }
+          btn.textContent = '拉取账号'; btn.disabled = false;
+        });
+      }
+    });
 
     // Toggle links
     container.addEventListener('click', (e) => {
