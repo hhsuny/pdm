@@ -1,7 +1,7 @@
 // app.js — Application bootstrap
 import { router } from './router.js';
 import { state } from './state.js';
-import { loadSync } from './storage.js';
+import { loadSync, saveSync } from './storage.js';
 import { toast } from './components/toast.js';
 import { sidebar } from './components/sidebar.js';
 import { backup } from './backup.js';
@@ -104,15 +104,9 @@ function initShortcuts() {
 // Register Routes
 // ============================================================
 function initRoutes() {
-  // Auth guard
-  router.guard(/^\/(?!login|register|settings|export).*$/, () => {
-    if (!state.isLoggedIn) { router.navigate('/login'); return false; }
-    return true;
-  });
-
-  // Auth
-  router.on('/login', authModule);
-  router.on('/register', authModule);
+  // No auth needed — single user mode
+  router.on('/login', homeModule);
+  router.on('/register', homeModule);
 
   // Home
   router.on('/home', homeModule);
@@ -383,13 +377,18 @@ async function init() {
     state.on(ev, () => sync.markDirty());
   });
 
-  // Restore session
-  const hasSession = state.restoreSession();
+  // Auto-login as default single user
+  const users = loadSync('pdm_users') || [];
+  let user = users[0];
+  if (!user) {
+    // Create default user
+    user = { id: 'default-user', username: '我' };
+    saveSync('pdm_users', [user]);
+  }
+  state.setCurrentUser({ userId: user.id, username: user.username });
 
-  if (hasSession) {
-    if (window.location.hash === '' || window.location.hash === '#/' || window.location.hash === '#/login' || window.location.hash === '#/register') {
-      router.navigate('/home');
-    }
+  if (window.location.hash === '' || window.location.hash === '#/' || window.location.hash === '#/login' || window.location.hash === '#/register') {
+    router.navigate('/home');
   }
 
   router.resolve();

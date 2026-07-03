@@ -35,14 +35,12 @@ export const sidebar = {
     const currentPath = router.getCurrentPath();
 
     nav.innerHTML = `
-      <!-- Header: User Info -->
+      <!-- Header: Date Display -->
       <div class="p-5">
-        <div class="flex items-center gap-3 mb-1">
-          <div class="w-10 h-10 rounded-full bg-[var(--color-blue)] flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
-            ${user ? user.username.charAt(0).toUpperCase() : '?'}
-          </div>
-          <div class="min-w-0">
-            <p class="font-semibold text-sm truncate">${user ? user.username : '未登录'}</p>
+        <div class="flex items-center gap-3">
+          <div class="text-2xl">📋</div>
+          <div>
+            <p class="font-semibold text-sm">个人管理</p>
             <p class="text-xs text-secondary">${niceDate(state.currentDate)}</p>
           </div>
         </div>
@@ -67,10 +65,6 @@ export const sidebar = {
           </div>
         `).join('')}
 
-        <div class="sidebar-link text-[#FF3B30] hover:text-[#FF3B30]" data-action="logout">
-          <span class="text-lg">🚪</span>
-          <span>退出登录</span>
-        </div>
       </div>
 `;
   },
@@ -91,13 +85,7 @@ export const sidebar = {
     window.addEventListener('hashchange', onHash);
     this._cleanup.push(() => window.removeEventListener('hashchange', onHash));
 
-    // Logout handler
-    document.addEventListener('click', (e) => {
-      if (e.target.closest('[data-action="logout"]')) {
-        state.destroySession();
-        router.navigate('/login');
-      }
-    });
+    // No logout needed — single user mode
   },
 
   refresh() {
