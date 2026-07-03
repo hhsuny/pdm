@@ -167,8 +167,7 @@ export const authModule = {
         btn.textContent = '拉取中...'; btn.disabled = true;
         import('../sync.js').then(async ({ sync }) => {
           try {
-            await sync.setup(token);
-            await sync.pull();
+            await sync.restoreAccount(token);
             state.emit('toast:show', { message: '账号拉取成功！请用电脑上的用户名密码登录', type: 'success' });
             document.getElementById('restore-section').classList.add('hidden');
           } catch (err) {

@@ -70,6 +70,41 @@ export const sync = {
     return gist;
   },
 
+  /** Restore account from cloud — works WITHOUT being logged in */
+  async restoreAccount(token) {
+    _token = token;
+
+    // Find existing PDM gist
+    const listResp = await fetch(`${GIST_API}?per_page=100`, {
+      headers: {
+        'Authorization': `token ${_token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    if (!listResp.ok) throw new Error('Token 无效，无法访问 GitHub');
+
+    const gists = await listResp.json();
+    const pdmGist = gists.find(g => g.description === 'PDM 个人数据备份（自动同步）');
+    if (!pdmGist) throw new Error('未找到云端数据，请先在电脑上开启同步');
+
+    _gistId = pdmGist.id;
+
+    // Pull and import all data
+    const file = pdmGist.files?.['pdm-data.json'];
+    if (!file || !file.raw_url) throw new Error('云端数据为空');
+
+    const dataResp = await fetch(file.raw_url);
+    const remoteData = await dataResp.json();
+    await importAll(remoteData, 'merge');
+
+    // Save config
+    await this._saveConfig();
+    this._status = 'synced';
+    this._lastSync = Date.now();
+    this._startAuto();
+    return true;
+  },
+
   /** Push local data to Gist */
   async push() {
     if (!_token || !_gistId) return false;
