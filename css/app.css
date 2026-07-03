@@ -337,6 +337,18 @@ body {
   #sidebar.open { left: 0; }
 
   .sidebar-overlay-visible { display: block !important; }
+
+  /* Disable backdrop-filter on mobile for performance */
+  .glass-card, .glass-card-subtle, #sidebar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: var(--color-surface) !important;
+  }
+
+  .modal-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 }
 
 /* ----- Drag Handle ----- */
