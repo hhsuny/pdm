@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="个人管理">
+  <meta name="description" content="个人每日管理系统 - 番茄钟、日程、日记、金融、习惯">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23007AFF'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white'>📋</text></svg>">
+  <title>个人管理</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            apple: {
+              blue: '#007AFF',
+              indigo: '#5856D6',
+              purple: '#AF52DE',
+              pink: '#FF2D55',
+              red: '#FF3B30',
+              orange: '#FF9500',
+              yellow: '#FFCC00',
+              green: '#34C759',
+              teal: '#5AC8FA',
+              gray: '#8E8E93',
+              gray2: '#AEAEB2',
+              gray3: '#C7C7CC',
+              gray4: '#D1D1D6',
+              gray5: '#E5E5EA',
+              gray6: '#F2F2F7',
+            }
+          },
+          borderRadius: {
+            'xl': '16px',
+            '2xl': '20px',
+            '3xl': '24px',
+          },
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="bg-[#f5f5f7] dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-[#f5f5f7] min-h-screen font-sans antialiased transition-colors duration-300">
+
+  <!-- App Shell -->
+  <div id="app" class="flex min-h-screen">
+    <!-- Sidebar -->
+    <nav id="sidebar" class="hidden lg:flex flex-col w-64 flex-shrink-0 bg-white/70 dark:bg-[#2c2c2e]/70 backdrop-blur-2xl border-r border-black/5 dark:border-white/10 h-screen sticky top-0 z-40 transition-all duration-300"></nav>
+
+    <!-- Mobile overlay -->
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/30 backdrop-blur-sm z-30 lg:hidden" data-action="close-sidebar"></div>
+
+    <!-- Main Content -->
+    <main id="content" class="flex-1 min-w-0 overflow-auto"></main>
+  </div>
+
+  <!-- Global Modal Container -->
+  <div id="modal-root"></div>
+
+  <!-- Global Toast Container -->
+  <div id="toast-root" class="fixed top-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Global Search Overlay -->
+  <div id="search-root"></div>
+
+  <!-- Context Menu -->
+  <div id="context-menu-root"></div>
+
+  <!-- Module Scripts (loaded in dependency order) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
