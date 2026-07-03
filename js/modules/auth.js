@@ -63,9 +63,6 @@ export const authModule = {
           <button type="button" class="btn-primary w-full text-sm" data-action="do-restore">拉取账号</button>
         </div>
       </form>`;
-          💡 在另一台设备注册过？请用<b>同样的用户名和密码</b>在此<b>注册</b>，然后设置页开启同步
-        </p>
-      </form>`;
   },
 
   _registerForm() {
