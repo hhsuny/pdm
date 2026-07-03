@@ -32,6 +32,8 @@ export const authModule = {
               ? '还没有账号？<a class="text-[var(--color-blue)] cursor-pointer hover:underline" data-action="go-register">注册</a>'
               : '已有账号？<a class="text-[var(--color-blue)] cursor-pointer hover:underline" data-action="go-login">登录</a>'
             }
+            <span class="mx-2">·</span>
+            <a class="text-[var(--color-blue)] cursor-pointer hover:underline" data-nav="/settings">⚙️ 设置</a>
           </p>
         </div>
       </div>`;
@@ -52,6 +54,9 @@ export const authModule = {
         </div>
         <p id="login-error" class="text-[#FF3B30] text-sm hidden"></p>
         <button type="submit" class="btn-primary w-full text-base py-3">登录</button>
+        <p class="text-xs text-secondary text-center mt-3">
+          💡 在另一台设备注册过？请用<b>同样的用户名和密码</b>在此<b>注册</b>，然后设置页开启同步
+        </p>
       </form>`;
   },
 
