@@ -130,7 +130,7 @@ export const authModule = {
           if (password !== confirm) throw new Error('两次密码输入不一致');
 
           const user = await db.createUser(username, password);
-          state.setCurrentUser(user);
+          state.setCurrentUser({ userId: user.id, username: user.username });
           state.emit('toast:show', { message: `注册成功！欢迎，${user.username}！`, type: 'success' });
           router.navigate('/home');
         } catch (err) {
