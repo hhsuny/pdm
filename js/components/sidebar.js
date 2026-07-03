@@ -72,16 +72,7 @@ export const sidebar = {
           <span>退出登录</span>
         </div>
       </div>
-
-      <!-- Mobile: hamburger toggle at top of content -->
-      <div class="lg:hidden fixed top-4 left-4 z-20">
-        <button class="btn-icon w-10 h-10 glass-card-subtle" data-action="toggle-sidebar" aria-label="菜单">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
-          </svg>
-        </button>
-      </div>
-    `;
+`;
   },
 
   _listen() {
