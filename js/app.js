@@ -105,7 +105,7 @@ function initShortcuts() {
 // ============================================================
 function initRoutes() {
   // Auth guard
-  router.guard(/^\/(?!login|register).*$/, () => {
+  router.guard(/^\/(?!login|register|settings|export).*$/, () => {
     if (!state.isLoggedIn) { router.navigate('/login'); return false; }
     return true;
   });
@@ -164,6 +164,24 @@ function createSettingsExportModule() {
       const path = router.getCurrentPath();
       const uid = state.userId;
       const settings = loadSync(`pdm_settings_${uid}`) || {};
+
+      if (!state.isLoggedIn) {
+        // Not logged in — show simplified sync recovery page
+        container.innerHTML = `
+          <div class="p-6 lg:p-10 max-w-lg mx-auto fade-in">
+            <div class="glass-card p-8 text-center">
+              <div class="text-4xl mb-4">📱</div>
+              <h2 class="text-lg font-semibold mb-2">从云端恢复</h2>
+              <p class="text-sm text-secondary mb-6">如果你在电脑上已经注册并开启了同步，<br>输入同一个 GitHub Token 来拉取账号数据。</p>
+              <input type="password" class="input-field mb-3" id="setting-gh-token" placeholder="粘贴 GitHub Token (ghp_...)">
+              <button class="btn-primary w-full" id="btn-setup-sync">连接并拉取数据</button>
+              <p class="text-xs text-secondary mt-4">拉取完成后，用电脑上相同的用户名密码注册即可</p>
+              <button class="btn-ghost text-sm mt-2" data-nav="/login">← 返回登录</button>
+            </div>
+          </div>`;
+        bindSettingsEvents(container);
+        return;
+      }
 
       if (path === '/export') {
         container.innerHTML = `
