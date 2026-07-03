@@ -17,7 +17,8 @@ function registerSW() {
     window.location.reload();
   });
 
-  navigator.serviceWorker.register('/sw.js', { scope: '/' }).then((reg) => {
+  const basePath = location.pathname.replace(/\/[^/]*$/, '') || '';
+  navigator.serviceWorker.register(basePath + '/sw.js', { scope: basePath + '/' }).then((reg) => {
     reg.addEventListener('updatefound', () => {
       const newWorker = reg.installing;
       if (!newWorker) return;
